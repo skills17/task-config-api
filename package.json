@@ -1,6 +1,6 @@
 {
   "name": "@skills17/task-config-api",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Provides an API for task config and local history.",
   "main": "lib/index.js",
   "files": [
