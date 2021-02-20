@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-var-requires */
+const minimist = require('minimist');
+const Server = require('../lib/Server').default;
+
+const argv = minimist(process.argv.slice(2));
+
+if (argv.help || argv.h) {
+  // eslint-disable-next-line no-console
+  console.log(`
+  Usage
+    $ skills17-task-config-api [options] [task directories...]
+
+    If no task directory is specified, the current directory will be used.
+
+  Options
+    --port, -p   Specify the port [Default=4500]
+    --bind, -b   Specify where the server will be bound [Default=127.0.0.1]
+  `);
+  process.exit(0);
+} else {
+  const port = argv.port || argv.p || 4500;
+  const bind = argv.bind || argv.b || '127.0.0.1';
+  const paths = argv._.length > 0 ? argv._ : [process.cwd()];
+
+  const server = new Server(port, bind, paths);
+
+  (async () => {
+    await server.serve();
+  })();
+}
