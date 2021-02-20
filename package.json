@@ -1,0 +1,33 @@
+{
+  "name": "@skills17/task-config-api",
+  "version": "0.1.0",
+  "description": "Provides an API for task config and local history.",
+  "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "npm run build:js && npm run build:types",
+    "build:js": "babel src --out-dir lib --delete-dir-on-start --extensions \".ts\"",
+    "build:js:watch": "npm run build:js -- --watch --verbose",
+    "build:types": "tsc --emitDeclarationOnly --project tsconfig.types.json",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skills17/task-config-api.git"
+  },
+  "author": "Cyril Wanner <info@cyr.li>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/skills17/task-config-api/issues"
+  },
+  "homepage": "https://github.com/skills17/task-config-api#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.17",
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/preset-typescript": "^7.12.17",
+    "typescript": "^4.1.5"
+  }
+}
