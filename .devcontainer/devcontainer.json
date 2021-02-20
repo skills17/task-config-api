@@ -1,0 +1,19 @@
+{
+  "name": "skills17-task-config-api",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "workspaceFolder": "/workspaces/task-config-api",
+  "remoteUser": "node",
+  "extensions": [
+    "dbaeumer.vscode-eslint"
+  ],
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "editor.tabSize": 2,
+    "editor.rulers": [100]
+  },
+  "postCreateCommand": "npm install"
+}
