@@ -114,6 +114,13 @@ export default class Server {
    */
   public async serve(printOnReady = true): Promise<void> {
     return new Promise((resolve) => {
+      // abort if no task can be served
+      if (Object.keys(this.configs).length === 0) {
+        this.printer.error('Error: No task can be served');
+        resolve();
+        return;
+      }
+
       const app = express();
 
       // configure express
