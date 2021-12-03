@@ -6,9 +6,9 @@
   "workspaceFolder": "/workspaces/task-config-api",
   "remoteUser": "node",
   "extensions": [
-	"dbaeumer.vscode-eslint",
-	"redhat.vscode-yaml"
-],
+    "dbaeumer.vscode-eslint",
+    "redhat.vscode-yaml"
+  ],
   "settings": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
