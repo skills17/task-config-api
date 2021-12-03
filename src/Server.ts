@@ -3,6 +3,7 @@ import fs from 'fs';
 import http from 'http';
 import express, { Request, Response } from 'express';
 import uniqid from 'uniqid';
+import yaml from 'js-yaml';
 import TaskConfig from '@skills17/task-config';
 
 export default class Server {
@@ -17,15 +18,15 @@ export default class Server {
     private printer: { log: (...args: any) => void; error: (...args: any) => void } = console, // eslint-disable-line
   ) {
     taskPaths.forEach((taskPath) => {
-      const configPath = path.resolve(taskPath, 'config.json');
+      const configPath = path.resolve(taskPath, 'config.yaml');
 
       if (!fs.existsSync(configPath)) {
-        this.printer.error(`Error: Could not load task ${taskPath}: config.json does not exist`);
+        this.printer.error(`Error: Could not load task ${taskPath}: config.yaml does not exist`);
         return;
       }
 
       const config = new TaskConfig();
-      config.loadFromFileSync(path.resolve(taskPath, 'config.json'));
+      config.loadFromFileSync(path.resolve(taskPath, 'config.yaml'));
 
       const taskId = config.getId();
 
@@ -94,10 +95,29 @@ export default class Server {
   }
 
   /**
+   * Return the config of a task
+   *
+   * @param req Request object
+   * @param res Response object
+   */
+  private getConfig(req: Request, res: Response): void {
+    if (!this.configs[req.params.taskId]) {
+      res.status(404).send('Task does not exist').end();
+      return;
+    }
+
+    const config = this.configs[req.params.taskId];
+    const configPath = path.resolve(config.getProjectRoot(), 'config.yaml');
+    const configFile = fs.readFileSync(configPath).toString();
+
+    res.json(yaml.load(configFile)).end();
+  }
+
+  /**
    * Checks whether the server is bound to localhost only
    */
   private isLocalhost(): boolean {
-    return !this.bind || this.bind === '127.0.0.1' || this.bind === '0.0.0.0';
+    return !this.bind || this.bind === '127.0.0.1';
   }
 
   /**
@@ -129,13 +149,7 @@ export default class Server {
 
       // create routes
       app.post('/:taskId/history', this.postHistory.bind(this));
-      Object.values(this.configs).forEach((config) => {
-        const taskId = config.getId()?.replace(/\s/g, '-').toLowerCase();
-        app.use(
-          `/${taskId}/config.json`,
-          express.static(path.resolve(config.getProjectRoot(), 'config.json')),
-        );
-      });
+      app.get('/:taskId/config.json', this.getConfig.bind(this));
 
       // handle listening callback
       const onListen = () => {

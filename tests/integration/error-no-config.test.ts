@@ -22,7 +22,7 @@ describe('error no config', () => {
     expect(printer.log).not.toHaveBeenCalled();
     expect(printer.error).toHaveBeenCalledTimes(2);
     expect(printer.error).toHaveBeenCalledWith(
-      `Error: Could not load task ${path.resolve(__dirname, 'tasks')}: config.json does not exist`,
+      `Error: Could not load task ${path.resolve(__dirname, 'tasks')}: config.yaml does not exist`,
     );
     expect(printer.error).toHaveBeenCalledWith('Error: No task can be served');
   });
